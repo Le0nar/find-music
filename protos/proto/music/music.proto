@@ -1,0 +1,57 @@
+// Версия ProtoBuf
+syntax = "proto3";
+
+// Текущий пакет - указывает пространство имен для сервиса и сообщений. Помогает избегать конфликтов имен.
+package music;
+
+// Настройки для генерации Go кода.
+option go_package = "le0nar.music.v1;musicv1";
+
+service Music {
+   rpc CreateMusic (CreateMusicRequest) returns (CreateMusicResponse);
+   rpc GetMusic (GetMusicRequest) returns (GetMusicResponse);
+   rpc UpdateMusic (UpdateMusicRequest) returns (UpdateMusicResponse);
+   rpc DeleteMusic (DeleteMusicRequest) returns (DeleteMusicResponse);
+   // TODO get musicList
+}
+
+// Create music
+message  CreateMusicRequest {
+   string singer = 1;
+   string track = 2;
+}
+
+message  CreateMusicResponse {
+   int64 id = 1;
+}
+
+// Get music by serach value
+message  GetMusicRequest {
+   string searchValue = 1;
+}
+
+message  GetMusicResponse {
+   string singer = 1;
+   string track = 2;
+   int64 id = 3;
+}
+
+// Update music
+message  UpdateMusicRequest {
+   string singer = 1;
+   string track = 2;
+   int64 id = 3;
+}
+
+message  UpdateMusicResponse {
+   int64 id = 1;
+}
+
+// Delete music
+message  DeleteMusicRequest {
+   int64 id = 1;
+}
+
+message  DeleteMusicResponse {
+   int64 id = 1;
+}
