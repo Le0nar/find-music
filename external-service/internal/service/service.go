@@ -6,25 +6,33 @@ import (
 	"github.com/Le0nar/find-music/external-service/internal/models"
 )
 
-type Service struct {
+type repository interface {
+	CreateMusic(ctx context.Context, singer, track string) (int64, error)
+	GetMusic(ctx context.Context, searchQuery string) (*models.Music, error)
+	UpdateMusic(ctx context.Context, singer, track string, id int64) (int64, error)
+	DeleteMusic(ctx context.Context, id int64) (int64, error)
 }
 
-func New() *Service {
-	return &Service{}
+type Service struct {
+	repository repository
+}
+
+func New(repo repository) *Service {
+	return &Service{repository: repo}
 }
 
 func (s *Service) CreateMusic(ctx context.Context, singer, track string) (int64, error) {
-	return 0, nil
+	return s.repository.CreateMusic(ctx, singer, track)
 }
 
 func (s *Service) GetMusic(ctx context.Context, searchQuery string) (*models.Music, error) {
-	return &models.Music{}, nil
+	return s.repository.GetMusic(ctx, searchQuery)
 }
 
 func (s *Service) UpdateMusic(ctx context.Context, singer, track string, id int64) (int64, error) {
-	return 0, nil
+	return s.repository.UpdateMusic(ctx, singer, track, id)
 }
 
 func (s *Service) DeleteMusic(ctx context.Context, id int64) (int64, error) {
-	return 0, nil
+	return s.repository.DeleteMusic(ctx, id)
 }

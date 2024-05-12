@@ -6,6 +6,7 @@ import (
 
 	musicv1 "github.com/Le0nar/find-music-protos/gen/go/music"
 	"github.com/Le0nar/find-music/external-service/internal/handler"
+	"github.com/Le0nar/find-music/external-service/internal/repository"
 	"github.com/Le0nar/find-music/external-service/internal/service"
 	"google.golang.org/grpc"
 )
@@ -18,7 +19,8 @@ func main() {
 	 	log.Fatalf("failed to listen on port 50051: %v", err)
 	}
    
-	service := service.New()
+	repo := repository.New()
+	service := service.New(repo)
 	handler := handler.New(service)
 
 	s := grpc.NewServer()
