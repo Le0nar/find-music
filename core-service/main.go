@@ -4,12 +4,10 @@ import (
 	"net/http"
 
 	"github.com/Le0nar/find-music/core-service/internal/handler"
-	"github.com/Le0nar/find-music/core-service/internal/service"
 )
 
 func main() {
-	service := service.NewService()
-	handler := handler.NewHandler(service)
+	handler := handler.NewHandler()
 
 	router := handler.InitRouter()
 
