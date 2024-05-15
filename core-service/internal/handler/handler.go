@@ -11,14 +11,15 @@ import (
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/render"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
 )
 
 
-type Handler struct {}
+type Handler struct {
+	gRPCCon *grpc.ClientConn
+}
 
-func NewHandler() *Handler {
-	return &Handler{}
+func NewHandler(conn *grpc.ClientConn) *Handler {
+	return &Handler{gRPCCon: conn}
 }
 
 // Initialization of router
@@ -34,14 +35,7 @@ func (h *Handler) InitRouter() http.Handler {
 func (h* Handler) GetMusic(w http.ResponseWriter, r *http.Request)  {
 	searchQuery := r.URL.Query().Get("searchQuery")
 
-	// TODO: OPEN GRPC CONNECT  ONE TIME IN app.go / main.go file
-	
-	conn, err := grpc.Dial("localhost:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
-	if err != nil {
-	 log.Fatalf("failed to connect to gRPC server at localhost:50051: %v", err)
-	}
-	defer conn.Close()
-	c := musicv1.NewMusicClient(conn)
+	c := musicv1.NewMusicClient(h.gRPCCon)
    
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
@@ -51,6 +45,6 @@ func (h* Handler) GetMusic(w http.ResponseWriter, r *http.Request)  {
 	 log.Fatalf("error calling function GetMusic: %v", err)
 	}
    
-	// TODO: now return music id
+	// TODO: now it returns music id
 	render.JSON(w, r, grpcRequest.GetId())
 }
