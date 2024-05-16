@@ -29,8 +29,6 @@ func TestUppercaseSinger(t *testing.T) {
 		},
 	}
 
-
-
 	// Act
 
 	for _, item := range testTable {
