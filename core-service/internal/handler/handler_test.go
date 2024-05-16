@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/Le0nar/find-music/core-service/internal/models"
-	"github.com/google/go-cmp/cmp"
+	"github.com/stretchr/testify/assert"
 )
 
 // Tesing pure function example
@@ -32,11 +32,9 @@ func TestUppercaseSinger(t *testing.T) {
 	// Act
 
 	for _, item := range testTable {
-		// Assert
 		result := UppercaseSinger(&item.example)
-		isEqueal := cmp.Equal(result, item.expected)
-		if !isEqueal {
-			t.Error("Incorrect result")
-		}
+
+		// Assert
+		assert.Equal(t, item.expected, result)
 	}
 }
