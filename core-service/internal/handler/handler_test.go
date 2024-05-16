@@ -10,15 +10,35 @@ import (
 // Tesing pure function example
 func TestUppercaseSinger(t *testing.T) {
 	// Arrange
-	exampleDto := models.MusicDto{Singer: "singer", Track: "track"}
-	expected := models.MusicDto{Singer: "SINGER", Track: "track"}
+
+	testTable := []struct{
+		example models.MusicDto
+		expected models.MusicDto
+	} {
+		{
+			example: models.MusicDto{Singer: "singer", Track: "track"},
+			expected:  models.MusicDto{Singer: "SINGER", Track: "track"},
+		},
+		{
+			example: models.MusicDto{Singer: "keeeek", Track: "track2"},
+			expected:  models.MusicDto{Singer: "KEEEEK", Track: "track2"},
+		},
+		{
+			example: models.MusicDto{Singer: "0aaaa1", Track: "track3"},
+			expected:  models.MusicDto{Singer: "0AAAA1", Track: "track3"},
+		},
+	}
+
+
 
 	// Act
-	result := UppercaseSinger(&exampleDto)
 
-	// Assert
-	isEqueal := cmp.Equal(result, expected)
-	if !isEqueal {
-		t.Error("Incorrect result")
+	for _, item := range testTable {
+		// Assert
+		result := UppercaseSinger(&item.example)
+		isEqueal := cmp.Equal(result, item.expected)
+		if !isEqueal {
+			t.Error("Incorrect result")
+		}
 	}
 }
